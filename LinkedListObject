@@ -1,175 +1,98 @@
-// C++ program for the above approach
 #include <iostream>
+
 using namespace std;
 
-// Node class to represent
-// a node of the linked list.
-class Node {
-public:
-	int data;
-	Node* next;
+class Student{
+    public:
+    string name, id;
+    float cg;
 
-	// Default constructor
-	Node()
-	{
-		data = 0;
-		next = NULL;
-	}
+    Student(){}
+    Student(string n, string i, float c){
+        name = n;
+        id = i;
+        cg = c;
+    }
 
-	// Parameterised Constructor
-	Node(int data)
-	{
-		this->data = data;
-		this->next = NULL;
-	}
+    void printDetails() {
+      cout<<"Name: "<<name<<endl;
+      cout<<"ID: "<<id<<endl;
+      cout<<"CGPA: "<<cg<<endl;
+   }
+
 };
 
-// Linked list class to
-// implement a linked list.
-class Linkedlist {
-	Node* head;
+
+class Node{
 
 public:
-	// Default constructor
-	Linkedlist() { head = NULL; }
-
-	// Function to insert a
-	// node at the end of the
-	// linked list.
-	void insertNode(int);
-
-	// Function to print the
-	// linked list.
-	void printList();
-
-	// Function to delete the
-	// node at given position
-	void deleteNode(int);
+    Student data;
+    Node *next;
 };
 
-// Function to delete the
-// node at given position
-void Linkedlist::deleteNode(int nodeOffset)
-{
-	Node *temp1 = head, *temp2 = NULL;
-	int ListLen = 0;
 
-	if (head == NULL) {
-		cout << "List empty." << endl;
-		return;
-	}
+class LinkedList{
 
-	// Find length of the linked-list.
-	while (temp1 != NULL) {
-		temp1 = temp1->next;
-		ListLen++;
-	}
+private:
+    Node *head;
+    Node *tail;
 
-	// Check if the position to be
-	// deleted is less than the length
-	// of the linked list.
-	if (ListLen < nodeOffset) {
-		cout << "Index out of range"
-			<< endl;
-		return;
-	}
+public:
+    LinkedList(){
+        this->head = NULL;
+        this->tail = NULL;
+    }
 
-	// Declare temp1
-	temp1 = head;
+    void createNewNode(Student data){
+        Node *temp = new Node();
+        temp->data = data;
+        temp->next = NULL;
 
-	// Deleting the head.
-	if (nodeOffset == 1) {
 
-		// Update head
-		head = head->next;
-		delete temp1;
-		return;
-	}
+        if(head == NULL){
+            head = temp;
+            tail = temp;
+        }else{
+            tail->next = temp;
+            tail = temp;
+        }
+    }
 
-	// Traverse the list to
-	// find the node to be deleted.
-	while (nodeOffset-- > 1) {
+    void ShowList(){
+        while(head->next != NULL){
+            cout<<"Student name: "<<head->data.name<< " "<<"ID: "<<head->data.id<<" "<<"CGPA: "<<head->data.cg<<endl;
+            head = head->next;
+        }
+    }
+};
 
-		// Update temp2
-		temp2 = temp1;
-
-		// Update temp1
-		temp1 = temp1->next;
-	}
-
-	// Change the next pointer
-	// of the previous node.
-	temp2->next = temp1->next;
-
-	// Delete the node
-	delete temp1;
-}
-
-// Function to insert a new node.
-void Linkedlist::insertNode(int data)
-{
-	// Create the new Node.
-	Node* newNode = new Node(data);
-
-	// Assign to head
-	if (head == NULL) {
-		head = newNode;
-		return;
-	}
-
-	// Traverse till end of list
-	Node* temp = head;
-	while (temp->next != NULL) {
-
-		// Update temp
-		temp = temp->next;
-	}
-
-	// Insert at the last.
-	temp->next = newNode;
-}
-
-// Function to print the
-// nodes of the linked list.
-void Linkedlist::printList()
-{
-	Node* temp = head;
-
-	// Check for empty list.
-	if (head == NULL) {
-		cout << "List empty" << endl;
-		return;
-	}
-
-	// Traverse the list.
-	while (temp != NULL) {
-		cout << temp->data << " ";
-		temp = temp->next;
-	}
-}
-
-// Driver Code
 int main()
 {
-	Linkedlist list;
+   string name, id;
+   float cg;
+   Student s[5];
+   for(int i=0; i<5; i++){
+    cout<<"Enter name of student "<<i+1<<": ";
+    cin>>name;
+    cout<<"Enter ID of student "<<i+1<<": ";
+    cin>>id;
+    cout<<"Enter CGPA of student "<<i+1<<": ";
+    cin>>cg;
+    cout<<"\n\n";
+    s[i] = Student(name, id, cg);
+    }
+//    for(int i=0; i <5; i++) {
+//       s[i].printDetails();
+//       cout<<endl;
+//    }
 
-	// Inserting nodes
-	list.insertNode(1);
-	list.insertNode(2);
-	list.insertNode(3);
-	list.insertNode(4);
+   LinkedList *myList = new LinkedList();
 
-	cout << "Elements of the list are: ";
+   for(int i=0; i<5; i++){
+    myList->createNewNode(s[i]);
+   }
+   myList->ShowList();
 
-	// Print the list
-	list.printList();
-	cout << endl;
-
-	// Delete node at position 2.
-	list.deleteNode(2);
-
-	cout << "Elements of the list are: ";
-	list.printList();
-	cout << endl;
-	return 0;
+    return 0;
 }
+
